@@ -71,12 +71,17 @@ HTMLWidgets.widget({
     
     Highcharts.setOptions(x.conf_opts);
     
+    console.log(x.type)
+    
     if(x.type == "chart") {
       if(x.debug) console.log("charting CHART");
       $("#" + el.id).highcharts(x.hc_opts);
     } else if (x.type == "stock") {
       if(x.debug) console.log("charting STOCK");
       $("#" + el.id).highcharts('StockChart', x.hc_opts);  
+    } else if (x.type == "gantt") {
+      if(x.debug) console.log("charting GANTT");
+      $("#" + el.id).highcharts('ganttChart', x.hc_opts);  
     } else if (x.type == "map"){
       if(x.debug) console.log("charting MAP");
 

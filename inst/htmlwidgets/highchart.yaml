@@ -70,7 +70,7 @@ dependencies:
 #    - modules/current-date-indicator.js
 #    - modules/cylinder.js
 #    - modules/debugger.js
-#    - modules/draggable-points.js
+    # - modules/draggable-points.js
 #    - modules/full-screen.js
 #    - modules/networkgraph.js
 #    - modules/oldie-polyfills.js
