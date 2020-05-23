@@ -104,11 +104,11 @@ highchart(type = 'gantt') %>%
 
 
 today = lubridate::force_tz(lubridate::round_date(Sys.time(), unit = 'day'), 'UTC')
-day = 86400
+day = 1000 * 60 * 60 * 24
 df = tibble::tribble(
   ~start,	                        ~end,           	~name,	 ~milestone,	~dependency,	~id,	~y,
   today + 2 * day   ,	today + day * 5,	  'Prototype'     			,      NA,            NA , 'prototype'  ,    0,
-  today + day * 6   ,               NA,   'Prototype done'     	,    TRUE,   'prototype' , 'proto_done' ,    0,
+  today + day * 6   , today + day * 6,   'Prototype done'     	,    TRUE,   'prototype' , 'proto_done' ,    0,
   today + day * 7   ,	today + day * 11,	  'Testing'     	      ,    	 NA,   'proto_done',        NA    ,    0,
   today + day * 5   ,	today + day * 8,	  'Product pages'     	,      NA,            NA ,        NA    ,    1,
   today + day * 9   ,	today + day * 10,	  'Newsletter'     			,      NA,            NA ,        NA    ,    1,
@@ -125,7 +125,6 @@ df = tibble::tribble(
 
 highchart(type = 'gantt') %>% 
   hc_add_dependency("modules/draggable-points.js") %>% 
-  hc_add_dependency("plugins/draggable-points.js") %>% 
   hc_add_series(data = df, name= 'My Project') %>% 
   hc_title(text = 'Interactive Gantt Chart') %>% 
   hc_subtitle(text= 'Drag and drop points to edit') %>% 
@@ -138,7 +137,7 @@ highchart(type = 'gantt') %>%
         draggableY= TRUE,
         dragMinY= 0,
         dragMaxY= 2,
-        dragPrecisionX= 500*86400* 8/12, # Snap to 8 hours
+        dragPrecisionX= day * 8/24, # Snap to 8 hours
         dragSensitivity = 10
       ),
       dataLabels= list(
@@ -151,9 +150,9 @@ highchart(type = 'gantt') %>%
       )
       # point= list(
       #   events= list(
-      #     select= updateRemoveButtonStatus,
-      #     unselect= updateRemoveButtonStatus,
-      #     remove= updateRemoveButtonStatus
+      #     drop= JS("function(){
+      #     Shiny.onInputChange('hc_drop_gantt', { id: this.series.name, x: this.name, y: this.y, start: this.start, end: this.end })
+      #     }")
       #   )
       # )
     )
